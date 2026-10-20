@@ -30,7 +30,7 @@ public class PipelineController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get detailed execution metrics and status for a pipeline job")
-    public ResponseEntity<PipelineJobDto> getJobById(@PathVariable String id) {
+    public ResponseEntity<PipelineJobDto> getJobById(@PathVariable(name = "id") String id) {
         return ResponseEntity.ok(pipelineJobService.getJobById(id));
     }
 

@@ -24,12 +24,12 @@ public class RestaurantController {
     @GetMapping
     @Operation(summary = "Search and filter restaurants with pagination")
     public ResponseEntity<Page<RestaurantDto>> getRestaurants(
-            @RequestParam(required = false) String keyword,
-            @RequestParam(required = false) String city,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size,
-            @RequestParam(defaultValue = "aggregateRating") String sortBy,
-            @RequestParam(defaultValue = "desc") String direction) {
+            @RequestParam(name = "keyword", required = false) String keyword,
+            @RequestParam(name = "city", required = false) String city,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "20") int size,
+            @RequestParam(name = "sortBy", defaultValue = "aggregateRating") String sortBy,
+            @RequestParam(name = "direction", defaultValue = "desc") String direction) {
 
         Sort sort = "asc".equalsIgnoreCase(direction) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Page<RestaurantDto> result = restaurantService.getRestaurants(keyword, city, PageRequest.of(page, size, sort));
@@ -38,7 +38,7 @@ public class RestaurantController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get restaurant profile by ID")
-    public ResponseEntity<RestaurantDto> getRestaurantById(@PathVariable Long id) {
+    public ResponseEntity<RestaurantDto> getRestaurantById(@PathVariable(name = "id") Long id) {
         return ResponseEntity.ok(restaurantService.getRestaurantById(id));
     }
 }
