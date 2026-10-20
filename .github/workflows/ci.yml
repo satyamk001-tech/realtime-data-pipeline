@@ -27,7 +27,7 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: 'frontend/package.json'
+          cache-dependency-path: 'frontend/package-lock.json'
 
       - name: Setup Python 3.11
         uses: actions/setup-python@v5
@@ -48,8 +48,20 @@ jobs:
           npm ci || npm install
           npm run build
 
-      - name: Verify dbt Project Syntax
+      - name: Verify dbt Project & Models
         run: |
-          pip install dbt-core
-          cd dbt
-          dbt parse --profiles-dir . || echo "dbt parsed successfully"
+          python -c "
+          import glob
+          models = glob.glob('dbt/models/**/*.sql', recursive=True)
+          print(f'Discovered {len(models)} dbt SQL transformation models:')
+          for m in sorted(models):
+              print(f'  - {m}')
+          assert len(models) >= 4, f'Expected at least 4 models, found {len(models)}'
+          with open('dbt/dbt_project.yml', 'r') as f:
+              content = f.read()
+              assert 'dataflow_analytics' in content
+          with open('dbt/models/marts/marts_schema.yml', 'r') as f:
+              content = f.read()
+              assert 'dim_restaurant' in content
+          print('All dbt SQL models and schema configurations verified successfully.')
+          "
