@@ -1,0 +1,125 @@
+version: '3.8'
+
+services:
+  # ==============================================================================
+  # Object Storage (MinIO - S3-Compatible Local Data Lake)
+  # ==============================================================================
+  minio:
+    image: minio/minio:RELEASE.2024-10-02T17-50-41Z
+    container_name: dataflow-minio
+    restart: unless-stopped
+    ports:
+      - "9000:9000"   # S3 API endpoint
+      - "9001:9001"   # Web Console UI
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin123
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # MinIO Bucket Auto-Provisioner
+  minio-init:
+    image: minio/mc:RELEASE.2024-10-02T08-27-28Z
+    container_name: dataflow-minio-init
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc alias set local http://minio:9000 minioadmin minioadmin123;
+      /usr/bin/mc mb --ignore-existing local/dataflow-lake;
+      /usr/bin/mc anonymous set download local/dataflow-lake;
+      exit 0;
+      "
+
+  # ==============================================================================
+  # Transactional Database & Vector Store (PostgreSQL + pgvector)
+  # ==============================================================================
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: dataflow-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: dataflow_db
+      POSTGRES_USER: dataflow_user
+      POSTGRES_PASSWORD: dataflow_secure_password_123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dataflow_user -d dataflow_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ==============================================================================
+  # Real-Time Event Streaming (Apache Kafka & Zookeeper)
+  # ==============================================================================
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.7.1
+    container_name: dataflow-zookeeper
+    restart: unless-stopped
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    volumes:
+      - zookeeper_data:/var/lib/zookeeper/data
+
+  kafka:
+    image: confluentinc/cp-kafka:7.7.1
+    container_name: dataflow-kafka
+    restart: unless-stopped
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+    volumes:
+      - kafka_data:/var/lib/kafka/data
+
+  # ==============================================================================
+  # Observability & Monitoring (Prometheus & Grafana)
+  # ==============================================================================
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    container_name: dataflow-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./infrastructure/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+
+  grafana:
+    image: grafana/grafana:11.2.2
+    container_name: dataflow-grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+
+volumes:
+  minio_data:
+  postgres_data:
+  zookeeper_data:
+  kafka_data:
+  prometheus_data:
+  grafana_data:

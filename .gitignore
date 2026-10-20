@@ -1,0 +1,95 @@
+# Compiled Java & Maven
+**/target/
+*.class
+*.jar
+*.war
+*.ear
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Node & Frontend
+**/node_modules/
+**/frontend/dist/
+**/frontend/build/
+.npm
+.yarn/
+.pnp
+.pnp.js
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python & dbt
+**/__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+**/dbt_packages/
+**/dbt/target/
+**/dbt/logs/
+
+# IDE & OS files
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment and Secrets (CRITICAL)
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.p12
+*.jks
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Temporary test & runtime data
+tmp/
+temp/
+.spark-staging/
+metastore_db/
+derby.log
+warehouse/
+
+# Airflow
+**/airflow/logs/
+**/airflow/airflow-webserver.pid

@@ -1,0 +1,13 @@
+**/.git
+**/.gitignore
+**/.vscode
+**/.idea
+**/node_modules
+**/target
+**/dist
+**/build
+**/*.log
+**/.env
+.env*
+README.md
+docs/
