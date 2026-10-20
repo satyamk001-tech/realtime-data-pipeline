@@ -1,0 +1,72 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: dataflow-backend
+
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:dataflow_db}
+    username: ${POSTGRES_USER:dataflow_user}
+    password: ${POSTGRES_PASSWORD:dataflow_secure_password_123}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      idle-timeout: 30000
+      connection-timeout: 5000
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration,filesystem:database/migrations
+
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: ${KAFKA_CONSUMER_GROUP:dataflow-analytics-group}
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+# Observability & Metrics
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  endpoint:
+    health:
+      show-details: always
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
+# DataFlow Custom Config
+dataflow:
+  storage:
+    lake-bucket: ${MINIO_BUCKET_NAME:dataflow-lake}
+    minio-endpoint: ${MINIO_ENDPOINT:http://localhost:9000}
+    access-key: ${MINIO_ACCESS_KEY:minioadmin}
+    secret-key: ${MINIO_SECRET_KEY:minioadmin123}
+  snowflake:
+    account: ${SNOWFLAKE_ACCOUNT:xy12345.us-east-1}
+    user: ${SNOWFLAKE_USER:dataflow_svc}
+    password: ${SNOWFLAKE_PASSWORD:snowflake_secret_pass}
+    warehouse: ${SNOWFLAKE_WAREHOUSE:DATAFLOW_WH}
+    database: ${SNOWFLAKE_DATABASE:ZOMATO_DWH}
+    schema: ${SNOWFLAKE_SCHEMA:MARTS}
+    role: ${SNOWFLAKE_ROLE:DATAFLOW_ANALYTICS_RO}
+  ai:
+    ollama-url: ${OLLAMA_BASE_URL:http://localhost:11434}
+    model: ${OLLAMA_MODEL:llama3.2}

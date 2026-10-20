@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ReviewEvent",
+  "type": "object",
+  "properties": {
+    "reviewId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "restaurantId": {
+      "type": "integer"
+    },
+    "rating": {
+      "type": "number",
+      "minimum": 1.0,
+      "maximum": 5.0
+    },
+    "reviewText": {
+      "type": "string"
+    },
+    "eventTimestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source": {
+      "type": "string"
+    }
+  },
+  "required": ["reviewId", "restaurantId", "rating", "reviewText", "eventTimestamp"]
+}

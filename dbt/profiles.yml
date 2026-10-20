@@ -1,0 +1,14 @@
+dataflow_profile:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT', 'xy12345.us-east-1') }}"
+      user: "{{ env_var('SNOWFLAKE_USER', 'dataflow_svc') }}"
+      password: "{{ env_var('SNOWFLAKE_PASSWORD', 'test_password') }}"
+      role: "{{ env_var('SNOWFLAKE_ROLE', 'DATAFLOW_ETL_ROLE') }}"
+      database: "{{ env_var('SNOWFLAKE_DATABASE', 'ZOMATO_DWH') }}"
+      warehouse: "{{ env_var('SNOWFLAKE_WAREHOUSE', 'DATAFLOW_WH') }}"
+      schema: "{{ env_var('SNOWFLAKE_SCHEMA', 'STAGING') }}"
+      threads: 4
+      client_session_keep_alive: False

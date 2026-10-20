@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: raw_dataflow
+    database: "{{ env_var('SNOWFLAKE_DATABASE', 'ZOMATO_DWH') }}"
+    schema: RAW
+    tables:
+      - name: RESTAURANTS_RAW
+        description: "Raw ingested restaurant profiles from Spark processed data lake"
+      - name: REVIEWS_RAW
+        description: "Raw customer reviews and event streaming payloads"

@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RestaurantEvent",
+  "type": "object",
+  "properties": {
+    "eventId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "eventType": {
+      "type": "string",
+      "enum": ["ORDER_PLACED", "REVIEW_CREATED", "RATING_UPDATED", "TABLE_RESERVED"]
+    },
+    "restaurantId": {
+      "type": "integer"
+    },
+    "restaurantName": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "rating": {
+      "type": "number",
+      "minimum": 1.0,
+      "maximum": 5.0
+    },
+    "orderAmount": {
+      "type": "number",
+      "minimum": 0.0
+    },
+    "eventTimestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source": {
+      "type": "string"
+    }
+  },
+  "required": ["eventId", "eventType", "restaurantId", "eventTimestamp"]
+}

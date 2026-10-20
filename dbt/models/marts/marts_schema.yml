@@ -1,0 +1,67 @@
+version: 2
+
+models:
+  - name: dim_restaurant
+    description: "Dimension table representing unique restaurants with SCD-1 attributes"
+    columns:
+      - name: restaurant_key
+        description: "Surrogate primary key"
+        tests:
+          - unique
+          - not_null
+      - name: restaurant_id
+        description: "Natural business key"
+        tests:
+          - not_null
+      - name: restaurant_name
+        description: "Official restaurant business name"
+        tests:
+          - not_null
+
+  - name: dim_location
+    description: "Dimension table capturing distinct city and locality pairs"
+    columns:
+      - name: location_key
+        tests:
+          - unique
+          - not_null
+      - name: city
+        tests:
+          - not_null
+
+  - name: dim_cuisine
+    description: "Normalized dimension of distinct cuisines offered"
+    columns:
+      - name: cuisine_key
+        tests:
+          - unique
+          - not_null
+      - name: cuisine_name
+        tests:
+          - not_null
+
+  - name: fact_restaurant_metrics
+    description: "Fact table recording restaurant financial and rating performance metrics"
+    columns:
+      - name: metric_id
+        tests:
+          - unique
+          - not_null
+      - name: restaurant_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_restaurant')
+              field: restaurant_key
+      - name: location_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_location')
+              field: location_key
+      - name: aggregate_rating
+        tests:
+          - not_null
+      - name: average_cost_for_two
+        tests:
+          - not_null
