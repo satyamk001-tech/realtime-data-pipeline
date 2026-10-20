@@ -38,7 +38,8 @@
 16. [Empirical Performance Benchmarks](#16-empirical-performance-benchmarks)
 17. [Quickstart & Running Guide](#17-quickstart--running-guide)
 18. [FAANG / System Design Placement Interview Defense](#18-faang--system-design-placement-interview-defense)
-19. [License & Acknowledgments](#19-license--acknowledgments)
+19. [Activity Overview & Developer Contribution Profile](#19-activity-overview--developer-contribution-profile)
+20. [License & Acknowledgments](#20-license--acknowledgments)
 
 ---
 
@@ -620,7 +621,36 @@ curl -X POST http://localhost:8080/api/v1/pipelines/run \
 
 ---
 
-## 19. License & Acknowledgments
+## 19. Activity Overview & Developer Contribution Profile
+
+### 📊 Repository Activity & Contribution Vector
+
+<div align="center">
+  <img src="docs/images/activity-overview.svg" alt="Activity Overview - Satyam Kumar" width="100%" />
+</div>
+
+<br/>
+
+### 📈 Real-Time GitHub Developer & Velocity Metrics
+
+<div align="center">
+  <a href="https://github.com/satyamk001-tech">
+    <img src="https://github-readme-stats.vercel.app/api?username=satyamk001-tech&show_icons=true&theme=tokyonight&hide_border=true&count_private=true" alt="Satyam Kumar's GitHub Stats" height="175" />
+  </a>
+  <a href="https://github.com/satyamk001-tech">
+    <img src="https://github-readme-streak-stats.herokuapp.com/?user=satyamk001-tech&theme=tokyonight&hide_border=true" alt="Satyam Kumar's Streak Stats" height="175" />
+  </a>
+</div>
+
+<div align="center" style="margin-top: 15px;">
+  <a href="https://github.com/satyamk001-tech/realtime-data-pipeline">
+    <img src="https://github-readme-activity-graph.vercel.app/graph?username=satyamk001-tech&theme=tokyo-night&hide_border=true" alt="Contribution Activity Graph" width="95%" />
+  </a>
+</div>
+
+---
+
+## 20. License & Acknowledgments
 
 * **License**: Open-source under the [MIT License](LICENSE).
 * **Author**: Satyam Kumar ([@satyamk001-tech](https://github.com/satyamk001-tech))

@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 240" width="100%" height="240" style="background:#0d1117;border-radius:10px;border:1px solid #30363d;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">
+  <style>
+    .title { font-size: 15px; font-weight: 600; fill: #e6edf3; }
+    .repo-text { font-size: 13px; fill: #8b949e; }
+    .repo-link { font-size: 13px; fill: #58a6ff; font-weight: 500; }
+    .axis-label { font-size: 12px; fill: #8b949e; text-anchor: middle; }
+    .axis-label-val { font-size: 12px; fill: #3fb950; font-weight: 600; }
+    .axis-line { stroke: #238636; stroke-width: 2; stroke-linecap: round; }
+    .axis-grid { stroke: #30363d; stroke-width: 1; stroke-dasharray: 2 2; }
+    .active-vector { stroke: #3fb950; stroke-width: 6; stroke-linecap: round; filter: drop-shadow(0 0 6px rgba(63, 185, 80, 0.7)); }
+    .active-dot { fill: #3fb950; stroke: #0d1117; stroke-width: 2; }
+    .stat-pill { fill: #161b22; stroke: #30363d; stroke-width: 1; rx: 6px; }
+    .stat-text { font-size: 11px; fill: #7d8590; }
+  </style>
+
+  <!-- Left Side: Activity Overview Metadata -->
+  <g transform="translate(28, 30)">
+    <text x="0" y="0" class="title">Activity overview</text>
+    
+    <!-- Repository link with book icon -->
+    <g transform="translate(0, 26)">
+      <path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 0 0 1.5h2.5a2.25 2.25 0 0 0 2.25-2.25V.75A2.25 2.25 0 0 0 13.25 0H4.5A4 4 0 0 0 .5 4v10.5A2.5 2.5 0 0 0 3 17h10.25a.75.75 0 0 0 0-1.5H3a1 1 0 0 1-1-1V2.5z" fill="#7d8590" transform="scale(0.85) translate(0, 2)"/>
+      <text x="20" y="12" class="repo-text">Contributed to <tspan class="repo-link">satyamk001-tech/realtime-data-pipeline</tspan></text>
+      <text x="20" y="32" class="repo-link">satyamk001-tech/dataflow-platform</text>
+    </g>
+
+    <!-- Contribution Summary Stats Badges -->
+    <g transform="translate(0, 88)">
+      <rect x="0" y="0" width="130" height="34" class="stat-pill"/>
+      <circle cx="14" cy="17" r="5" fill="#3fb950"/>
+      <text x="26" y="15" class="stat-text">COMMITS</text>
+      <text x="26" y="27" style="font-size:12px;font-weight:600;fill:#3fb950">91% Lead</text>
+
+      <rect x="140" y="0" width="130" height="34" class="stat-pill"/>
+      <circle cx="154" cy="17" r="5" fill="#58a6ff"/>
+      <text x="166" y="15" class="stat-text">PULL REQUESTS</text>
+      <text x="166" y="27" style="font-size:12px;font-weight:600;fill:#58a6ff">5% PRs</text>
+
+      <rect x="280" y="0" width="110" height="34" class="stat-pill"/>
+      <circle cx="294" cy="17" r="5" fill="#bc8cff"/>
+      <text x="306" y="15" class="stat-text">ISSUES</text>
+      <text x="306" y="27" style="font-size:12px;font-weight:600;fill:#bc8cff">4% Issues</text>
+    </g>
+  </g>
+
+  <!-- Right Side: 4-Axis Radar / Activity Graph -->
+  <g transform="translate(640, 120)">
+    <!-- Radar Base Axes -->
+    <!-- Vertical: Code review (top) <-> Pull requests (bottom) -->
+    <line x1="0" y1="-75" x2="0" y2="75" class="axis-line"/>
+    
+    <!-- Horizontal: Commits (left) <-> Issues (right) -->
+    <line x1="-120" y1="0" x2="120" y2="0" class="axis-line"/>
+
+    <!-- Dominant Activity Vector: Commits 91% (Highlight Glow) -->
+    <line x1="0" y1="0" x2="-100" y2="0" class="active-vector"/>
+    
+    <!-- PR Minor Offset Vector: 5% -->
+    <line x1="0" y1="0" x2="0" y2="12" stroke="#3fb950" stroke-width="4" stroke-linecap="round"/>
+    
+    <!-- Issues Minor Offset Vector: 4% -->
+    <line x1="0" y1="0" x2="10" y2="0" stroke="#3fb950" stroke-width="4" stroke-linecap="round"/>
+
+    <!-- Axis Center & End Node Dots -->
+    <circle cx="0" cy="0" r="4" class="active-dot"/>
+    <circle cx="-100" cy="0" r="6" class="active-dot"/>
+    <circle cx="0" cy="12" r="3.5" class="active-dot"/>
+    <circle cx="10" cy="0" r="3.5" class="active-dot"/>
+
+    <!-- Labels -->
+    <!-- Top: Code review -->
+    <text x="0" y="-88" class="axis-label">Code review</text>
+
+    <!-- Bottom: 5% Pull requests -->
+    <text x="0" y="96" class="axis-label"><tspan class="axis-label-val">5%</tspan> Pull requests</text>
+
+    <!-- Left: 91% Commits -->
+    <text x="-128" y="4" class="axis-label" style="text-anchor:end"><tspan class="axis-label-val">91%</tspan> Commits</text>
+
+    <!-- Right: 4% Issues -->
+    <text x="128" y="4" class="axis-label" style="text-anchor:start"><tspan class="axis-label-val">4%</tspan> Issues</text>
+  </g>
+</svg>
