@@ -29,7 +29,7 @@
         <minio.version>8.5.12</minio.version>
         <postgresql.version>42.7.4</postgresql.version>
         <pgvector.version>0.1.6</pgvector.version>
-        <snowflake.jdbc.version>3.19.0</snowflake.jdbc.version>
+        <snowflake.jdbc.version>4.4.1</snowflake.jdbc.version>
         
         <!-- Utilities & Parsing -->
         <jsqlparser.version>4.9</jsqlparser.version>
