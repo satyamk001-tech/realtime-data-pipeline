@@ -7,6 +7,7 @@ import com.dataflow.backend.entity.PipelineJobEntity;
 import com.dataflow.backend.entity.RestaurantEntity;
 import com.dataflow.backend.exception.ResourceNotFoundException;
 import com.dataflow.backend.mapper.PipelineJobMapper;
+import com.dataflow.backend.kafka.producer.PipelineEventProducer;
 import com.dataflow.backend.repository.PipelineJobRepository;
 import com.dataflow.backend.repository.RestaurantRepository;
 import com.dataflow.ingestion.model.IngestionJob;
@@ -15,6 +16,7 @@ import com.dataflow.ingestion.service.IngestionService;
 import com.dataflow.ingestion.storage.LocalStorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,11 +38,17 @@ public class PipelineJobService {
 
     private final PipelineJobRepository pipelineJobRepository;
     private final RestaurantRepository restaurantRepository;
+    private PipelineEventProducer pipelineEventProducer;
 
     public PipelineJobService(PipelineJobRepository pipelineJobRepository,
                               RestaurantRepository restaurantRepository) {
         this.pipelineJobRepository = pipelineJobRepository;
         this.restaurantRepository = restaurantRepository;
+    }
+
+    @Autowired(required = false)
+    public void setPipelineEventProducer(PipelineEventProducer pipelineEventProducer) {
+        this.pipelineEventProducer = pipelineEventProducer;
     }
 
     @Transactional(readOnly = true)
@@ -83,6 +91,9 @@ public class PipelineJobService {
 
         PipelineJobEntity saved = pipelineJobRepository.save(entity);
         log.info("Created pipeline job ticket [{}] with status PENDING", jobId);
+        if (pipelineEventProducer != null) {
+            pipelineEventProducer.publishJobEvent(jobId, runId, "PIPELINE_INITIATED", "PENDING", 0);
+        }
 
         // Execute asynchronously
         executeAsyncPipeline(jobId, runId, sourcePath);
@@ -178,6 +189,9 @@ public class PipelineJobService {
             job.setTargetPath(ingestionJob.getS3RawPath());
             job.setDurationMs(duration);
             job.setCompletedAt(Instant.now());
+            if (pipelineEventProducer != null) {
+                pipelineEventProducer.publishJobEvent(jobId, runId, "PIPELINE_COMPLETED", "SUCCEEDED", validCount);
+            }
             pipelineJobRepository.save(job);
 
             log.info("Pipeline job [{}] completed in {} ms. Valid={}, Quarantined={}",
@@ -189,6 +203,9 @@ public class PipelineJobService {
             job.setErrorMessage(e.getMessage());
             job.setDurationMs(System.currentTimeMillis() - start);
             job.setCompletedAt(Instant.now());
+            if (pipelineEventProducer != null) {
+                pipelineEventProducer.publishJobEvent(jobId, runId, "PIPELINE_FAILED", "FAILED", 0);
+            }
             pipelineJobRepository.save(job);
         }
     }
