@@ -26,7 +26,7 @@
         <scala.compat.version>2.12</scala.compat.version>
         
         <!-- Storage & Connectors -->
-        <minio.version>8.5.12</minio.version>
+        <minio.version>9.0.4</minio.version>
         <postgresql.version>42.7.4</postgresql.version>
         <pgvector.version>0.1.6</pgvector.version>
         <snowflake.jdbc.version>3.19.0</snowflake.jdbc.version>
