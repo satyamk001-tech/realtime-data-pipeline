@@ -22,7 +22,7 @@
 
         <!-- Core Frameworks -->
         <spring.boot.version>3.3.4</spring.boot.version>
-        <spark.version>3.5.3</spark.version>
+        <spark.version>3.5.9</spark.version>
         <scala.compat.version>2.12</scala.compat.version>
         
         <!-- Storage & Connectors -->
