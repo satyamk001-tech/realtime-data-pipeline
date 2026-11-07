@@ -134,7 +134,7 @@ public class TextToSqlService {
 
         // Layer 4: Statement Type Enforce (Strictly SELECT only)
         if (!(stmt instanceof Select)) {
-            throw new SecurityValidationException("Non-SELECT statement rejected. DDL and DML operations are strictly blocked");
+            throw new SecurityValidationException("Prohibited statement type: only SELECT queries are permitted");
         }
 
         // Layer 5: Table Whitelist Verification
@@ -143,7 +143,7 @@ public class TextToSqlService {
         for (String table : tables) {
             String normalizedTable = table.replace("\"", "").replace("'", "").trim().toUpperCase();
             if (!ALLOWED_TABLES.contains(normalizedTable)) {
-                throw new SecurityValidationException("Access violation: Table '" + table + "' is not permitted under read-only analytical policy");
+                throw new SecurityValidationException("Unauthorized table access: '" + table + "' is not in the analytical whitelist");
             }
         }
     }

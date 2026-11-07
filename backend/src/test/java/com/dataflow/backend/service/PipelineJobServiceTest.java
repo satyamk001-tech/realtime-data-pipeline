@@ -32,7 +32,7 @@ class PipelineJobServiceTest {
         request.setTriggeredBy("UNIT_TEST");
 
         PipelineJobEntity savedEntity = new PipelineJobEntity();
-        savedEntity.setJobId("job-12345");
+        savedEntity.setId("job-12345");
         savedEntity.setPipelineType("BATCH_ETL");
         savedEntity.setStatus("SUBMITTED");
 
@@ -41,7 +41,7 @@ class PipelineJobServiceTest {
         PipelineJobDto result = pipelineJobService.triggerPipeline(request);
 
         assertThat(result).isNotNull();
-        assertThat(result.getJobId()).isEqualTo("job-12345");
+        assertThat(result.getId()).isEqualTo("job-12345");
         assertThat(result.getStatus()).isEqualTo("SUBMITTED");
         verify(pipelineJobRepository, times(1)).save(any(PipelineJobEntity.class));
     }

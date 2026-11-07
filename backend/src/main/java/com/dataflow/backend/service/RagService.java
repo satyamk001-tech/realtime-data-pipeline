@@ -107,7 +107,7 @@ public class RagService {
                 "Grounded Retrieval across %d customer review records (Top Cosine Match: %.1f%% similarity). " +
                 "Sentiment breakdown indicates %d positive endorsements and %d critical observations matching '%s'.",
                 citations.size(),
-                citations.get(0).getSimilarity() * 100.0,
+                citations.get(0).getSimilarityScore() * 100.0,
                 positiveCount,
                 negativeCount,
                 query
